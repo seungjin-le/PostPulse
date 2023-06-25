@@ -1,7 +1,11 @@
-declare module 'lodash' {
-  import {ReactNode} from 'react'
+import {ReactNode} from 'react'
 
+declare module 'lodash' {
   export interface LayoutProps {
     children: ReactNode
+  }
+  export interface PostBtnProps {
+    onClick: () => void
+    text: string
   }
 }

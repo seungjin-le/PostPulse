@@ -3,9 +3,15 @@ const Posts = require('../models/Post')
 const PostController = {
   // Create a new post
   createPost: async (req, res) => {
-    console.log(req.body)
+    // Function to get the next auto-incrementing postId
+    async function getNextPostId() {
+      const lastPost = await Posts.findOne({}, {}, {sort: {postId: -1}})
+      return lastPost ? lastPost.postId + 1 : 0
+    }
     try {
       const post = new Posts(req.body)
+      post.postId = await getNextPostId()
+      console.log(post)
       await post.save()
       res.status(201).send(post)
     } catch (error) {

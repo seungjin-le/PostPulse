@@ -1,8 +1,8 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-const postRoutes = express.Router()
-const config = require('./config/Config')
+const postRoutes = require('./routes/PostRoutes')
+const config = require('./config/config')
 const app = express()
 
 // MongoDB에 연결

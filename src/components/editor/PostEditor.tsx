@@ -1,29 +1,31 @@
 'use client'
-import React, {memo, useCallback, useEffect, useRef, useState} from 'react'
+import React, {ChangeEvent, memo, useCallback, useEffect, useRef} from 'react'
 import '@toast-ui/editor/dist/toastui-editor.css'
 import {Editor} from '@toast-ui/react-editor'
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax'
-import uploadFile from '../../utility/utility'
-import {uploadBytesResumable} from 'firebase/storage'
+import {uploadFile} from '../../utility/utility'
 import PostBtn from '../buttons/PostBtn'
+import {createdData} from '../../utility/apiModuls'
+import {EndPoint} from '../../dataManaget/apiMapper'
+import {postState} from '../../recoil/PostAtom'
+import {useRecoilState} from 'recoil'
+import {PostStateTypes} from 'lodash'
 
 const PostEditor = () => {
   const editorRef = useRef<any>(null)
-  const [post, setPost] = useState({
-    title: '',
-    content: '',
-  })
-  const [images, setImages] = useState('')
+
+  const [post, setPost] = useRecoilState(postState)
 
   const handlePostOnChange = useCallback(
-    ({target: {id, value}}: EventTarget) => {
+    ({target: {id, value}}: ChangeEvent<HTMLInputElement>) => {
       setPost({
         ...post,
         [id]: value,
       })
     },
-    [post.title],
+    [post.postTitle],
   )
+
   const toolbarItems = [
     ['heading', 'bold', 'italic', 'strike'],
     ['hr'],
@@ -35,18 +37,32 @@ const PostEditor = () => {
   ]
 
   const handleAddPostOnClick = async () => {
-    const downURL = await uploadFile('qweqwfasfad')
-    console.log(downURL)
+    const content = editorRef.current.getInstance().getMarkdown()
+    const json = JSON.stringify({
+      userEmail: 'dltmdwls@sdfj;asjf.com',
+      userNickName: 'Bibibibg',
+      postTitle: post.postTitle,
+      postContent: content,
+      postImages: post.postImages,
+    })
+
+    createdData(EndPoint.POST_POST, json)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
   }
 
-  const addImage = async (blob, callback) => {
-    if (!blob.name) return alert('이미지 이름을 추가해주세요.')
+  const addImage = async (blob: any, callback: any) => {
+    if (!blob.name) return alert('이미지를 추가해주세요.')
+
     try {
       const file = new File([blob], blob.name, {type: blob.type})
-      //const downloadURL = await uploadFile(file)
-      console.log(editorRef.current.getInstance().getMarkdown())
-
-      callback('downloadURL', 'alt text')
+      const imageDescription: string = (document.getElementById('toastuiAltTextInput') as HTMLInputElement).value
+      const downloadURL = await uploadFile(file)
+      setPost((post: PostStateTypes) => ({
+        ...post,
+        postImages: [...post.postImages, downloadURL],
+      }))
+      callback('downloadURL', imageDescription)
     } catch (error) {
       console.error('Failed to upload image:', error)
     }
@@ -63,18 +79,17 @@ const PostEditor = () => {
       <div className={'w-full pb-4 flex flex-col  justify-end '}>
         <input
           type='text'
-          id={'title'}
+          id={'postTitle'}
           className={'border-none w-full  text-[black] rounded-container bg-[gray] px-4 py-2'}
-          value={post.title || ''}
+          value={post.postTitle || ''}
           onChange={handlePostOnChange}
         />
       </div>
-
       {editorRef && (
         <div className={'h-full w-full'}>
           <Editor
             ref={editorRef}
-            initialValue={post.content}
+            initialValue={post.postContent}
             initialEditType={'markdown'} // 'wysiwyg'
             previewStyle={window.innerWidth > 1000 ? 'vertical' : 'tab'} // tab, vertical
             hideModeSwitch={true}

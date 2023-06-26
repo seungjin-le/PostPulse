@@ -482,6 +482,9 @@ video {
 .pointer-events-none {
   pointer-events: none;
 }
+.static {
+  position: static;
+}
 .fixed {
   position: fixed;
 }
@@ -560,6 +563,9 @@ video {
 .h-\[100px\] {
   height: 100px;
 }
+.h-\[90\%\] {
+  height: 90%;
+}
 .h-auto {
   height: auto;
 }
@@ -568,33 +574,6 @@ video {
 }
 .h-screen {
   height: 100vh;
-}
-.h-2 {
-  height: 0.5rem;
-}
-.h-10 {
-  height: 2.5rem;
-}
-.h-20 {
-  height: 5rem;
-}
-.h-40 {
-  height: 10rem;
-}
-.h-\[700px\] {
-  height: 700px;
-}
-.h-\[900px\] {
-  height: 900px;
-}
-.h-\[80\%\] {
-  height: 80%;
-}
-.h-\[90\%\] {
-  height: 90%;
-}
-.h-\[100\%\] {
-  height: 100%;
 }
 .max-h-24 {
   max-height: 6rem;
@@ -704,6 +683,10 @@ video {
   --tw-border-opacity: 1;
   border-color: rgb(238 238 238 / var(--tw-border-opacity));
 }
+.bg-\[gray\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(128 128 128 / var(--tw-bg-opacity));
+}
 .bg-\[red\] {
   --tw-bg-opacity: 1;
   background-color: rgb(255 0 0 / var(--tw-bg-opacity));
@@ -715,15 +698,8 @@ video {
 .bg-pageBg {
   background-color: rgba(22,22,22, 0.9);
 }
-.bg-\[gray\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(128 128 128 / var(--tw-bg-opacity));
-}
 .bg-header {
   background-image: linear-gradient(0deg, hsla(0, 0%, 10%, 0),#161616);
-}
-.bg-center {
-  background-position: center;
 }
 .p-12 {
   padding: 3rem;
@@ -753,10 +729,6 @@ video {
 .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-}
-.py-4 {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
 }
 .pb-0 {
   padding-bottom: 0px;
@@ -788,20 +760,13 @@ video {
 .italic {
   font-style: italic;
 }
-.text-description {
-  --tw-text-opacity: 1;
-  color: rgb(155 155 155 / var(--tw-text-opacity));
-}
-.text-\[\#eee\] {
-  --tw-text-opacity: 1;
-  color: rgb(238 238 238 / var(--tw-text-opacity));
-}
-.text-\[\#eeeee\] {
-  color: #eeeee;
-}
 .text-\[black\] {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
+}
+.text-description {
+  --tw-text-opacity: 1;
+  color: rgb(155 155 155 / var(--tw-text-opacity));
 }
 .opacity-0 {
   opacity: 0;

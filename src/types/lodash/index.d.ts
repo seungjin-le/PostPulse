@@ -8,4 +8,11 @@ declare module 'lodash' {
     onClick: () => void
     text: string
   }
+  export interface PostStateTypes {
+    userEmail: string
+    userNickName: string
+    postTitle: string
+    postContent: string
+    postImages: string[unknown | string]
+  }
 }

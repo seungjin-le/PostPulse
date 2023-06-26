@@ -32,9 +32,21 @@ const PostController = {
   getAllPosts: async (req, res) => {
     try {
       const posts = await Posts.find({})
-      res.send(posts)
+      console.log(posts)
+
+      res.status(200).send({
+        result: posts,
+        isSuccess: true,
+        code: 200,
+        message: 'Get Post successfully',
+      })
     } catch (error) {
-      res.status(500).send(error)
+      res.status(400).send({
+        result: null,
+        isSuccess: false,
+        code: 400,
+        message: 'Get Post not',
+      })
     }
   },
 

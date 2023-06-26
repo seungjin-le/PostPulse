@@ -1,15 +1,33 @@
-import React from 'react'
+'use client'
+import React, {memo, useEffect} from 'react'
 import PostItem from './PostItem'
+import {getData} from '../../utility/apiModuls'
+import {EndPoint} from '../../dataManaget/apiMapper'
+import {postsState} from '../../recoil/PostsAtom'
+import {useRecoilState} from 'recoil'
 
 const PostList = () => {
-  const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  const [post, setPost] = useRecoilState(postsState)
+
+  const getDates = () => {
+    getData(EndPoint.GET_POSTS)
+      .then(res => {
+        setPost(res)
+      })
+      .catch(err => console.log(err))
+  }
+  useEffect(() => {
+    getDates()
+    console.log(post)
+  }, [])
+
   return (
     <div className={'w-full h-full relative'}>
-      {arr.map(v => {
-        return <PostItem key={v} />
+      {post?.map((v, i) => {
+        return <PostItem key={i} post={v} />
       })}
     </div>
   )
 }
 
-export default PostList
+export default memo(PostList)

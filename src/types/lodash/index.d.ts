@@ -13,6 +13,10 @@ declare module 'lodash' {
     userNickName: string
     postTitle: string
     postContent: string
-    postImages: string[unknown | string]
+    postImages: string[unknown | string | null]
+    postTags: string[]
+  }
+  export interface PostsStateTypes {
+    posts: [] | PostStateTypes[]
   }
 }

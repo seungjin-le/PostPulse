@@ -10,12 +10,14 @@ import {EndPoint} from '../../dataManaget/apiMapper'
 import {postState} from '../../recoil/PostAtom'
 import {useRecoilState} from 'recoil'
 import {PostStateTypes} from 'lodash'
+import {storage} from '../../utility/firebase/firebaseConfig'
+import {deleteObject, ref} from 'firebase/storage'
+import {useRouter} from 'next/navigation'
 
 const PostEditor = () => {
   const editorRef = useRef<any>(null)
-
   const [post, setPost] = useRecoilState(postState)
-
+  const router = useRouter()
   const handlePostOnChange = useCallback(
     ({target: {id, value}}: ChangeEvent<HTMLInputElement>) => {
       setPost({
@@ -47,13 +49,14 @@ const PostEditor = () => {
     })
 
     createdData(EndPoint.POST_POST, json)
-      .then(res => console.log(res))
+      .then(() => {
+        router.back()
+      })
       .catch(err => console.log(err))
   }
 
   const addImage = async (blob: any, callback: any) => {
     if (!blob.name) return alert('이미지를 추가해주세요.')
-
     try {
       const file = new File([blob], blob.name, {type: blob.type})
       const imageDescription: string = (document.getElementById('toastuiAltTextInput') as HTMLInputElement).value
@@ -62,10 +65,24 @@ const PostEditor = () => {
         ...post,
         postImages: [...post.postImages, downloadURL],
       }))
-      callback('downloadURL', imageDescription)
+      callback(downloadURL, imageDescription)
     } catch (error) {
       console.error('Failed to upload image:', error)
     }
+  }
+
+  const handleCancel = async (): Promise<void> => {
+    if (!confirm('Go Back?')) return
+    for (const url of post.postImages) {
+      const imageRef = ref(storage, url)
+      await deleteObject(imageRef).then(() => {
+        setPost((post: PostStateTypes) => ({
+          ...post,
+          postImages: [],
+        }))
+      })
+    }
+    router.back()
   }
 
   useEffect(() => {
@@ -103,6 +120,7 @@ const PostEditor = () => {
         </div>
       )}
       <div className={'w-full text-right mt-4'}>
+        <PostBtn text={'Go Back'} onClick={handleCancel} />
         <PostBtn text={'Add Post'} onClick={handleAddPostOnClick} />
       </div>
     </>

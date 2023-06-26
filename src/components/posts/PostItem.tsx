@@ -1,17 +1,28 @@
 'use client'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import dayjs from 'dayjs'
 
-const PostItem = () => {
+const PostItem = ({post}: any) => {
+  const [formatData, setFormatData] = useState({
+    date: '',
+    content: '',
+  })
   const tags = ['Tag1', 'Tag2', 'Tag3', 'Tag4', 'Tag5']
+  useEffect(() => {
+    setFormatData({
+      date: dayjs(post?.createdAt).format('YYYY년 MM월 DD일'),
+      content: post.postContent.replaceAll(/!\[(.+?)\]\((.+?)\)/g, '[Image]'),
+    })
+  }, [])
 
   return (
     <div className={'w-full mb-4'}>
       <div className={'w-full flex flex-col justify-between  relative bg-pageBg rounded-item overflow-hidden p-4'}>
         <div className={'text-2xl'}>
-          <span className={'cursor-pointer'}>Title</span>
+          <span className={'cursor-pointer'}>{post?.postTitle}</span>
         </div>
         <div className={'my-2 text-description '}>
-          <span className={'cursor-pointer'}>Description</span>
+          <span className={'cursor-pointer'}>{formatData?.content}</span>
         </div>
         <div className={'my-4'}>
           {tags.map(v => {
@@ -23,7 +34,7 @@ const PostItem = () => {
           })}
         </div>
         <div>
-          <span className={'cursor-pointer'}>2023년 4월 24일</span>
+          <span className={'cursor-pointer'}>{formatData.date}</span>
         </div>
       </div>
     </div>

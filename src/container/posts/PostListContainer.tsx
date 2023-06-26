@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 import PostList from '../../components/posts/PostList'
 
 const PostListContainer = () => {
@@ -9,4 +9,4 @@ const PostListContainer = () => {
   )
 }
 
-export default PostListContainer
+export default memo(PostListContainer)

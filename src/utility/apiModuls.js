@@ -13,7 +13,7 @@ export const getData = async url => {
     if (!isSuccess || isEmpty(result)) {
       return alert(message)
     }
-    if (code === 1000) {
+    if (code === 200) {
       return result
     } else {
       return alert(message)

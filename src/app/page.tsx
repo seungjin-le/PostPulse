@@ -1,19 +1,24 @@
 'use client'
 import PostListContainer from '../container/posts/PostListContainer'
-import {RecoilRoot} from 'recoil'
 import {useRouter} from 'next/navigation'
 import PostBtn from '../components/buttons/PostBtn'
+import useUserStore from '../utility/zustand/UserZustand'
+import {getSession} from 'next-auth/react'
 
-export default function Home() {
+const Home = () => {
   const router = useRouter()
+  const {isLoggedIn} = useUserStore()
+
   return (
-    <RecoilRoot>
-      <div className='w-full h-full p-12 pt-6 flex flex-col items-center border-t border-texts'>
+    <div className='w-full h-full p-12 pt-6 flex flex-col items-center border-t border-texts'>
+      {isLoggedIn && (
         <div className={'w-full text-right pb-6'}>
           <PostBtn text={'New Post'} onClick={() => router.push('post')} />
         </div>
-        <PostListContainer />
-      </div>
-    </RecoilRoot>
+      )}
+      <PostListContainer />
+    </div>
   )
 }
+
+export default Home

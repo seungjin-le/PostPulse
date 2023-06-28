@@ -19,4 +19,18 @@ declare module 'lodash' {
   export interface PostsStateTypes {
     posts: [] | PostStateTypes[]
   }
+  export interface TitleTextProps {
+    title: string
+    level: string
+  }
+  export interface UserTypes {
+    platform: string
+    name: string
+    email: string
+    picture: string
+    sub?: string
+    iat?: number
+    exp?: number
+    jti?: string
+  }
 }

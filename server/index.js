@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const postRoutes = require('./routes/PostRoutes')
+const userRoutes = require('./routes/UserRoutes')
 const config = require('./config/config')
 const app = express()
 
@@ -26,6 +27,7 @@ app.use(express.json())
 
 // 라우터 설정
 app.use('/', postRoutes)
+app.use('/', userRoutes)
 
 // 서버 실행
 app.listen(config.server.port, () => {
